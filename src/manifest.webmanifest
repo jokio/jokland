@@ -1,8 +1,8 @@
 {
-  "name": "jokland",
+  "name": "Jokland",
   "short_name": "jokland",
-  "theme_color": "#1976d2",
-  "background_color": "#fafafa",
+  "theme_color": "#ffa600",
+  "background_color": "#272727",
   "display": "standalone",
   "scope": "./",
   "start_url": "./",
