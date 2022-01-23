@@ -118,18 +118,6 @@ ion-segment {
   }
 }
 
-@media only screen and (max-width: 480px) {
-  ion-segment {
-    &.mobileScreen {
-      width: 400px;
-      margin-left: -200px;
-
-      ion-segment-button {
-        min-width: unset;
-      }
-    }
-  }
-}
 @media only screen and (max-width: 405px) {
   ion-segment {
     &.mobileScreen {

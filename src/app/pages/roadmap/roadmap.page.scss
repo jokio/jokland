@@ -1,0 +1,39 @@
+ion-card-content {
+  display: flex;
+
+  .plan {
+    flex: 1;
+  }
+
+  .goals {
+    width: 240px;
+    border-left: 1px solid silver;
+    padding-left: 15px;
+  }
+
+  h4 {
+    font-size: 20px;
+    color: silver;
+  }
+
+  ul {
+    padding-left: 26px;
+
+    li {
+      margin-bottom: 10px;
+    }
+  }
+}
+@media only screen and (max-width: 520px) {
+  ion-card-content {
+    flex-direction: column;
+
+    .goals {
+      border-top: 1px solid #e1e1e1;
+      border-left-width: 0;
+      padding-top: 10px;
+      padding-left: 0;
+      width: unset;
+    }
+  }
+}

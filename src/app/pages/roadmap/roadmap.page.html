@@ -1,1 +1,34 @@
-<p>roadmap works!</p>
+<main class="centered">
+  <h2 class="ion-padding-horizontal">Roadmap</h2>
+  <div></div>
+
+  <ion-card *ngFor="let phase of phases; let i = index" color="light">
+    <ion-card-header>
+      <ion-card-subtitle>Phase {{ i }}</ion-card-subtitle>
+      <ion-card-title>{{ phase.name }}</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <div class="plan">
+        <h4>Plan</h4>
+        <ul>
+          <li *ngFor="let item of phase.planItems">
+            {{ item.name }}
+          </li>
+        </ul>
+      </div>
+
+      <div class="goals">
+        <h4>Goals</h4>
+        <ul>
+          <li *ngFor="let item of phase.goals">
+            {{item.name}}
+            <ng-container *ngIf="item.description">
+              <br /><small>{{item.description}}</small>
+            </ng-container>
+          </li>
+        </ul>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</main>
