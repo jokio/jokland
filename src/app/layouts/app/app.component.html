@@ -1,0 +1,91 @@
+<ion-app>
+  <header class="ion-padding">
+    <ion-toolbar>
+      <div class="ion-text-center logo" slot="start">
+        <ion-icon src="/assets/joklogo.svg"></ion-icon>
+      </div>
+
+      <ion-segment
+        class="desktopScreen"
+        color="secondary"
+        [value]="selectedTab"
+        (ionChange)="onTabChange($event)"
+      >
+        <ion-segment-button
+          value="avatar"
+          routerLinkActive="segment-button-checked"
+          routerLink="/avatar"
+        >
+          <ion-label>Avatar</ion-label>
+        </ion-segment-button>
+        <ion-segment-button
+          value="packs"
+          routerLinkActive="segment-button-checked"
+          routerLink="/packs"
+        >
+          <ion-label>Packs</ion-label>
+        </ion-segment-button>
+        <ion-segment-button
+          value="roadmap"
+          routerLinkActive="segment-button-checked"
+          routerLink="/roadmap"
+        >
+          <ion-label>Roadmap</ion-label>
+        </ion-segment-button>
+        <ion-segment-button
+          value="games"
+          routerLinkActive="segment-button-checked"
+          routerLink="/games"
+        >
+          <ion-label>Games</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+
+      <div slot="end" class="ion-text-center actions">
+        <ion-button color="secondary" size="small"
+          >Connect Wallet</ion-button
+        >
+        <ion-button color="secondary" size="small">...</ion-button>
+      </div>
+    </ion-toolbar>
+  </header>
+  <ion-content>
+    <router-outlet></router-outlet>
+  </ion-content>
+
+  <ion-segment
+    class="mobileScreen"
+    color="secondary"
+    [value]="selectedTab"
+    (ionChange)="onTabChange($event)"
+  >
+    <ion-segment-button
+      value="avatar"
+      routerLinkActive="segment-button-checked"
+      routerLink="/avatar"
+    >
+      <ion-label>Avatar</ion-label>
+    </ion-segment-button>
+    <ion-segment-button
+      value="packs"
+      routerLinkActive="segment-button-checked"
+      routerLink="/packs"
+    >
+      <ion-label>Packs</ion-label>
+    </ion-segment-button>
+    <ion-segment-button
+      value="roadmap"
+      routerLinkActive="segment-button-checked"
+      routerLink="/roadmap"
+    >
+      <ion-label>Roadmap</ion-label>
+    </ion-segment-button>
+    <ion-segment-button
+      value="games"
+      routerLinkActive="segment-button-checked"
+      routerLink="/games"
+    >
+      <ion-label>Games</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+</ion-app>

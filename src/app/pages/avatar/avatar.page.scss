@@ -1,0 +1,17 @@
+header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+
+  ion-button {
+    min-width: 180px;
+  }
+}
+
+.preview {
+  height: 400px;
+  background: url("/assets/avatar_promo.png") center center repeat-x;
+  background-size: 550px;
+}

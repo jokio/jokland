@@ -1,0 +1,137 @@
+header {
+  background: var(--jok-background-color);
+
+  .logo {
+    min-width: 150px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    ion-icon {
+      height: 40px;
+      width: 50px;
+      color: white;
+      margin-top: -4px;
+    }
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    min-width: 110px;
+  }
+}
+
+ion-toolbar {
+  --background: var(--jok-background-color);
+  align-items: center;
+}
+
+ion-content {
+  --background: var(--jok-background-color);
+  --color: white;
+}
+
+ion-segment {
+  --ion-color-step-350: var(--ion-color-secondary);
+  align-self: center;
+  min-height: 36px;
+
+  ion-segment-button {
+    // --ion-background-color: red;
+    min-width: 115px;
+    color: white;
+
+    ion-label {
+      color: white;
+    }
+  }
+
+  &.mobileScreen {
+    display: none;
+    align-self: center;
+    position: fixed;
+    bottom: 10px;
+    width: 460px;
+    left: 50%;
+    margin-left: -230px;
+    background: white;
+
+    ion-segment-button {
+      color: var(--ion-color-contrast);
+
+      ion-label {
+        color: var(--ion-color-contrast);
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 1100px) {
+  header {
+    .logo {
+      min-width: 70px;
+    }
+  }
+
+  ion-segment {
+    &.desktopScreen {
+      margin-left: 0;
+    }
+  }
+}
+
+// overrides
+@media only screen and (max-width: 850px) {
+  ion-segment {
+    &.desktopScreen {
+      display: none;
+    }
+
+    &.mobileScreen {
+      display: flex;
+    }
+  }
+
+  ion-content {
+    --padding-bottom: 100px;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  ion-segment {
+    &.mobileScreen {
+      width: 400px;
+      margin-left: -200px;
+
+      ion-segment-button {
+        min-width: unset;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  ion-segment {
+    &.mobileScreen {
+      width: 400px;
+      margin-left: -200px;
+
+      ion-segment-button {
+        min-width: unset;
+      }
+    }
+  }
+}
+@media only screen and (max-width: 405px) {
+  ion-segment {
+    &.mobileScreen {
+      width: 360px;
+      margin-left: -180px;
+
+      ion-segment-button {
+        min-width: unset;
+      }
+    }
+  }
+}
