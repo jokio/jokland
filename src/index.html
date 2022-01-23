@@ -16,6 +16,18 @@
       rel="apple-touch-icon"
       href="/assets/icons/icon-512x512.png"
     />
+
+    <script>
+      /**
+       * It shoud never happen if redirect happens on the DNS level
+       */
+      if (
+        location.hostname === 'the.jok.land' &&
+        location.protocol === 'http'
+      ) {
+        document.location.assign('https://the.jok.land')
+      }
+    </script>
   </head>
   <body>
     <app-root></app-root>
