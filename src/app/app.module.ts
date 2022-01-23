@@ -1,8 +1,12 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { IonicModule } from '@ionic/angular';
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './layouts/app/app.component';
+import {
+  HashLocationStrategy,
+  LocationStrategy,
+} from '@angular/common'
+import { NgModule } from '@angular/core'
+import { BrowserModule } from '@angular/platform-browser'
+import { IonicModule } from '@ionic/angular'
+import { AppRoutingModule } from './app-routing.module'
+import { AppComponent } from './layouts/app/app.component'
 
 @NgModule({
   declarations: [AppComponent],
@@ -11,7 +15,12 @@ import { AppComponent } from './layouts/app/app.component';
     AppRoutingModule,
     IonicModule.forRoot({ mode: 'ios' }),
   ],
-  providers: [],
+  providers: [
+    [
+      Location,
+      { provide: LocationStrategy, useClass: HashLocationStrategy },
+    ],
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
