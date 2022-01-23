@@ -1,6 +1,7 @@
 export const phases = [
   {
     name: 'Launch 🚀',
+    status: 'ACTIVE',
     planItems: [
       { name: 'Avatar Builder UI' },
       { name: 'Avatar Contract' },

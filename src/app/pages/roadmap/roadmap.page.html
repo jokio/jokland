@@ -6,6 +6,15 @@
     <ion-card-header>
       <ion-card-subtitle>Phase {{ i }}</ion-card-subtitle>
       <ion-card-title>{{ phase.name }}</ion-card-title>
+
+      <div
+        *ngIf="phase.status === 'ACTIVE'"
+        class="status ion-padding"
+      >
+        <ion-text color="success">
+          <strong>IN PROGRESS</strong>
+        </ion-text>
+      </div>
     </ion-card-header>
 
     <ion-card-content>
