@@ -9,6 +9,8 @@ import { Component, OnInit } from '@angular/core'
 export class AppComponent implements OnInit {
   selectedTab = 'avatar'
 
+  hideSeparatorLine = true
+
   constructor(private location: Location) {}
 
   ngOnInit() {
@@ -30,5 +32,9 @@ export class AppComponent implements OnInit {
 
   onTabChange(e: any) {
     this.selectedTab = e.detail.value
+  }
+
+  onScroll(e: any) {
+    this.hideSeparatorLine = e.detail.currentY === 0
   }
 }

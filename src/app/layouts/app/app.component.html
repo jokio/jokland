@@ -1,5 +1,8 @@
 <ion-app>
-  <header class="ion-padding">
+  <header
+    class="ion-padding"
+    [class.separatorLine]="!hideSeparatorLine"
+  >
     <ion-toolbar>
       <div class="ion-text-center logo" slot="start">
         <ion-icon src="/assets/joklogo.svg"></ion-icon>
@@ -49,7 +52,7 @@
       </div>
     </ion-toolbar>
   </header>
-  <ion-content>
+  <ion-content [scrollEvents]="true" (ionScroll)="onScroll($event)">
     <router-outlet></router-outlet>
   </ion-content>
 

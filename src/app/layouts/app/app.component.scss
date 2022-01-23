@@ -1,5 +1,11 @@
 header {
   background: var(--jok-background-color);
+  transition: 100ms linear;
+
+  ion-toolbar {
+    --background: transparent;
+    align-items: center;
+  }
 
   .logo {
     min-width: 150px;
@@ -20,11 +26,12 @@ header {
     align-items: center;
     min-width: 110px;
   }
-}
 
-ion-toolbar {
-  --background: var(--jok-background-color);
-  align-items: center;
+  &.separatorLine {
+    border-bottom: 1px solid #363636;
+
+    background: #303030;
+  }
 }
 
 ion-content {
