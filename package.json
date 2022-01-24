@@ -6,6 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
+    "dockerizex": "docker buildx build --platform linux/amd64 --push -t jokio/jokland:latest -f ./Dockerfile ./dist/jokland/",
+    "dockerize": "docker build -t jokio/jokland:latest -f ./Dockerfile ./dist/jokland/",
     "test": "ng test"
   },
   "private": true,
