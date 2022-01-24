@@ -2,10 +2,10 @@
   <!-- <h2 class="ion-padding-horizontal">Packs</h2> -->
 
   <div class="packs">
-    <ion-card *ngFor="let pack of packs" color="light">
+    <ion-card *ngFor="let pack of packs; let i = index" color="light">
       <img [src]="pack.imageUrl" />
       <ion-card-header>
-        <!-- <ion-card-subtitle>Card Subtitle</ion-card-subtitle> -->
+        <ion-card-subtitle>Pack #{{i + 1}}</ion-card-subtitle>
         <ion-card-title>{{ pack.name }}</ion-card-title>
       </ion-card-header>
 
