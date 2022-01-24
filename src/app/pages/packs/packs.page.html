@@ -1,1 +1,32 @@
-<p>packs works!</p>
+<main class="centered">
+  <!-- <h2 class="ion-padding-horizontal">Packs</h2> -->
+
+  <div class="packs">
+    <ion-card *ngFor="let pack of packs" color="light">
+      <img [src]="pack.imageUrl" />
+      <ion-card-header>
+        <!-- <ion-card-subtitle>Card Subtitle</ion-card-subtitle> -->
+        <ion-card-title>{{ pack.name }}</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <ul>
+          <li>
+            Unique Items: <strong>{{ pack.itemsCount }}</strong>
+          </li>
+          <li>
+            Total Supply: <strong>{{ pack.totalSupply }}</strong>
+          </li>
+        </ul>
+        <div
+          *ngIf="pack.status === 'PENDING'"
+          class="ion-text-center"
+        >
+          <ion-button fill="outline" disabled>
+            {{ pack.launchText }}
+          </ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</main>

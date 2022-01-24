@@ -37,4 +37,6 @@ export class AppComponent implements OnInit {
   onScroll(e: any) {
     this.hideSeparatorLine = e.detail.currentY === 0
   }
+
+  openAbout() {}
 }

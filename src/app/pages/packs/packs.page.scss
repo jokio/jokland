@@ -1,0 +1,23 @@
+.centered {
+  max-width: 800px;
+}
+
+main {
+  padding-top: 20px;
+}
+
+ion-card {
+  width: 270px;
+}
+
+ul {
+  margin-top: 0;
+  padding-left: 0px;
+  list-style: none;
+}
+
+.packs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}

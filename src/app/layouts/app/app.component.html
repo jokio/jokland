@@ -45,10 +45,57 @@
       </ion-segment>
 
       <div slot="end" class="ion-text-center actions">
-        <ion-button color="secondary" size="small"
-          >Connect Wallet</ion-button
-        >
-        <ion-button color="secondary" size="small">...</ion-button>
+        <ion-button color="secondary" size="small">
+          Connect Wallet
+        </ion-button>
+        <ion-button id="menuButton" color="secondary" size="small">
+          ...
+        </ion-button>
+
+        <ion-popover trigger="menuButton">
+          <ng-template>
+            <ion-content color="light">
+              <ion-list>
+                <ion-item
+                  color="light"
+                  [button]="true"
+                  (click)="openAbout()"
+                >
+                  <ion-icon
+                    name="information-circle-outline"
+                    slot="start"
+                  ></ion-icon>
+                  <ion-label>About</ion-label>
+                </ion-item>
+                <ion-item
+                  color="light"
+                  href="https://github.com/jokio"
+                  target="_blank"
+                >
+                  <ion-icon
+                    name="logo-github"
+                    slot="start"
+                  ></ion-icon>
+                  <ion-label>Github</ion-label>
+                </ion-item>
+                <ion-item
+                  color="light"
+                  href="https://discord.gg/dV5ymCYWBG"
+                  target="_blank"
+                >
+                  <ion-icon
+                    name="logo-discord"
+                    slot="start"
+                  ></ion-icon>
+                  <ion-label>Discord</ion-label>
+                </ion-item>
+                <ion-item color="light">
+                  <ion-label>Credits</ion-label>
+                </ion-item>
+              </ion-list>
+            </ion-content>
+          </ng-template>
+        </ion-popover>
       </div>
     </ion-toolbar>
   </header>
