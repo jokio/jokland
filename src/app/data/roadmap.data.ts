@@ -26,6 +26,7 @@ export const phases = [
       { name: 'Create design guidelines for creators' },
       { name: 'Publish 3 new Packs' },
       { name: 'Find partner website to integrate the avatar' },
+      { name: 'Find creators on LinkedIn' },
       { name: 'Find creators on Behance' },
     ],
 
