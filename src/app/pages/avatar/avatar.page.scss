@@ -2,7 +2,7 @@ header {
   border-bottom: 1px solid rgba(255, 255, 255, 0.07);
 }
 
-footer {
+section:not(.preview) {
   border-top: 1px solid rgba(255, 255, 255, 0.07);
 
   ion-button {
@@ -12,6 +12,14 @@ footer {
 
 .preview {
   height: 400px;
-  background: url("/assets/avatar_promo.png") center center repeat-x;
+  background: url('/assets/avatar_promo.png') center center repeat-x;
   background-size: 550px;
+}
+
+p {
+  line-height: 26px;
+}
+
+a.cursor {
+  cursor: pointer;
 }

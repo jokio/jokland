@@ -15,6 +15,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     const path = this.location.path(false)
+
     switch (path) {
       case '/packs':
         this.selectedTab = 'packs'
