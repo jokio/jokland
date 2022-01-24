@@ -50,6 +50,7 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+        if: steps.cache.outputs.cache-hit != 'true'
 
       - name: Build the IPFS bundle
         run: npm run build
