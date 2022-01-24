@@ -59,6 +59,7 @@
                 <ion-item
                   color="light"
                   [button]="true"
+                  [detailIcon]="false"
                   (click)="openAbout()"
                 >
                   <ion-icon
@@ -71,6 +72,7 @@
                   color="light"
                   href="https://github.com/jokio"
                   target="_blank"
+                  detailIcon="open-outline"
                 >
                   <ion-icon
                     name="logo-github"
@@ -82,6 +84,7 @@
                   color="light"
                   href="https://discord.gg/dV5ymCYWBG"
                   target="_blank"
+                  detailIcon="open-outline"
                 >
                   <ion-icon
                     name="logo-discord"
@@ -89,9 +92,9 @@
                   ></ion-icon>
                   <ion-label>Discord</ion-label>
                 </ion-item>
-                <ion-item color="light">
+                <!-- <ion-item color="light">
                   <ion-label>Credits</ion-label>
-                </ion-item>
+                </ion-item> -->
               </ion-list>
             </ion-content>
           </ng-template>

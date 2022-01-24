@@ -31,8 +31,8 @@ export const phases = [
 
     goals: [
       { name: '50Ξ Sales', description: '(to speed up next phases)' },
-      { name: '10000 unique users' },
-      { name: '3 creator' },
+      { name: '10 000 unique users' },
+      { name: '3 creators' },
       { name: '1 partner website' },
     ],
   },
@@ -52,9 +52,9 @@ export const phases = [
         name: '100Ξ Sales',
         description: '(to start working on Games)',
       },
-      { name: '50000 unique users' },
-      { name: '30 creator' },
-      { name: '5 partner website' },
+      { name: '50 000 unique users' },
+      { name: '30 creators' },
+      { name: '5 partner websites' },
     ],
   },
 ]
