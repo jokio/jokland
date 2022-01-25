@@ -8,7 +8,7 @@ import { Router } from '@angular/router'
 import { ModalController } from '@ionic/angular'
 import { Subject } from 'rxjs'
 import { AvatarBuilderComponent } from '../../components/avatar-builder/avatar-builder.component'
-import { AvatarItemType } from '../../domain/avatar.types'
+import { AvatarBuilderTabs } from '../../domain/avatar.types'
 
 @Component({
   selector: 'app-avatar',
@@ -24,7 +24,7 @@ export class AvatarPage implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.openBuilder()
+    // this.openBuilder()
   }
 
   ngOnDestroy() {
@@ -43,7 +43,7 @@ export class AvatarPage implements OnInit, OnDestroy {
     })
 
     const selectedTab =
-      localStorage.getItem('jok.builderTab') ?? AvatarItemType.SKIN
+      localStorage.getItem('jok.builderTab') ?? AvatarBuilderTabs.SKIN
 
     const modalView = await this.modal.create({
       component: AvatarBuilderComponent,
