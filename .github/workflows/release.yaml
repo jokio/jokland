@@ -63,6 +63,7 @@ jobs:
           path: './dist/jokland'
           pinata-api-key: ${{ secrets.PINATA_API_KEY }}
           pinata-secret-api-key: ${{ secrets.PINATA_API_SECRET_KEY }}
+          remove-old: true
 
       # - name: Pin to Crust
       #   uses: crustio/ipfs-crust-action@v2.0.3
