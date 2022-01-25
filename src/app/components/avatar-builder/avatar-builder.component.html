@@ -1,0 +1,49 @@
+<ion-header color="light">
+  <div class="avatarPreview">
+    <div class="container">
+      <ng-container *ngFor="let imageUrl of layers; let i = index">
+        <img [src]="imageUrl" [alt]="'layer ' + i" />
+      </ng-container>
+    </div>
+  </div>
+  <ion-segment
+    [scrollable]="true"
+    [value]="selectedTab"
+    (ionChange)="onTabChange($event)"
+  >
+    <ion-segment-button
+      *ngFor="let item of menuItems"
+      [value]="item.tab"
+    >
+      <ion-label>{{ item.title }}</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+</ion-header>
+<ion-content color="light">
+  <section *ngFor="let group of selectedCollectionGroups">
+    <h2 class="ion-padding-horizontal">{{ group.name }}</h2>
+    <div
+      *ngFor="let collection of group.collections"
+      class="collection"
+    >
+      <h3 *ngIf="collection.name" class="ion-padding-horizontal">
+        {{ collection.name }}
+      </h3>
+      <div class="itemsContainer">
+        <div
+          *ngFor="let item of collection.items"
+          class="item ion-margin"
+          [class.selected]="isSelected(item)"
+          [style.backgroundImage]="getBackgroundImage(item)"
+          (click)="selectItem(item)"
+        >
+          <!-- {{ item.key }} -->
+        </div>
+        <div
+          *ngFor="let item of [1, 2, 3, 4, 5]"
+          class="emptyItem ion-margin-horizontal"
+        ></div>
+      </div>
+    </div>
+  </section>
+</ion-content>

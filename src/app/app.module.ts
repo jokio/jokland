@@ -8,10 +8,11 @@ import { ServiceWorkerModule } from '@angular/service-worker'
 import { IonicModule } from '@ionic/angular'
 import { environment } from '../environments/environment'
 import { AppRoutingModule } from './app-routing.module'
+import { AvatarBuilderComponent } from './components/avatar-builder/avatar-builder.component'
 import { AppComponent } from './layouts/app/app.component'
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, AvatarBuilderComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
