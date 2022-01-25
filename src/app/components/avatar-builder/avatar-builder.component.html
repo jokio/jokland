@@ -34,10 +34,14 @@
           *ngFor="let item of collection.items"
           class="item ion-margin"
           [class.selected]="isSelected(item)"
-          [style.backgroundImage]="getBackgroundImage(item)"
           (click)="selectItem(item)"
         >
+          <img [src]="item.url" />
           <!-- {{ item.key }} -->
+
+          <div class="selectionIcon">
+            <ion-icon name="checkmark-sharp"></ion-icon>
+          </div>
         </div>
         <div
           *ngFor="let item of [1, 2, 3, 4, 5]"
