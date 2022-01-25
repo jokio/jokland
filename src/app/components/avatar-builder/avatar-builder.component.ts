@@ -43,8 +43,6 @@ export class AvatarBuilderComponent implements OnInit {
       x => x.tab === this.selectedTab,
     )
 
-    console.log(menuItem, this.selectedTab)
-
     return <AvatarCollectionGroup[]>(
       (
         menuItem?.avatarLayerTypes.map(x => this.data.get(x)) ?? []
@@ -112,7 +110,6 @@ export class AvatarBuilderComponent implements OnInit {
   }
 
   onTabChange(e: any) {
-    console.log(e.detail.value)
     this.selectedTab = e.detail.value
 
     this.selectedTabChange.emit(this.selectedTab)
