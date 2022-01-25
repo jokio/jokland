@@ -57,7 +57,7 @@ jobs:
 
       - name: Pin to IPFS
         id: upload
-        uses: anantaramdas/ipfs-pinata-deploy-action@39bbda1ce1fe24c69c6f57861b8038278d53688d
+        uses: anantaramdas/ipfs-pinata-deploy-action@366f7c1fa247eed73dc00cbed4dab34f70e5dfb9
         with:
           pin-name: Jokland
           path: './dist/jokland'
