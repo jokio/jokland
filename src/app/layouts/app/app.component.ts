@@ -38,8 +38,11 @@ export class AppComponent implements OnInit {
     const path = this.location.path(false)
 
     const userAddress = localStorage.getItem('jok.address') ?? ''
-
-    this.loadAccount(userAddress)
+    if (userAddress === 'undefined') {
+      localStorage.removeItem('jok.address')
+    } else {
+      this.loadAccount(userAddress)
+    }
 
     switch (path) {
       case '/packs':
@@ -92,6 +95,10 @@ export class AppComponent implements OnInit {
   }
 
   async loadAccount(account: string) {
+    if (!account) {
+      return
+    }
+
     localStorage.setItem('jok.address', account)
     this.userAddress = account
     this.userDisplayAddress = this.minimizeAddress(account)
