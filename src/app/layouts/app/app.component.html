@@ -54,7 +54,9 @@
           >
             <span class="balance"> {{ account.userBalance }}Ξ </span>
             {{ account.userENS || account.userDisplayAddress }}
-            <span class="chain"> [{{ account.chainName }}] </span>
+            <span *ngIf="account.chainName" class="chain">
+              [{{ account.chainName }}]
+            </span>
           </ion-button>
 
           <div
