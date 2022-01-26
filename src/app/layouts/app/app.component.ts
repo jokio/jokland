@@ -18,6 +18,7 @@ export class AppComponent implements OnInit {
     ['0x4', 'Rinkeby'],
     ['0x5', 'Goerli'],
     ['0x2a', 'Kovan'],
+    ['0x89', 'Polygon'],
   ])
 
   hideSeparatorLine = true
