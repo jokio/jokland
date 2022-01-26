@@ -89,12 +89,12 @@
 }
 
 :root {
-  --ion-color-artifact: #fbc02d;
-  --ion-color-artifact-rgb: 251, 192, 45;
+  --ion-color-artifact: #ffe082;
+  --ion-color-artifact-rgb: 255, 224, 130;
   --ion-color-artifact-contrast: #000000;
   --ion-color-artifact-contrast-rgb: 0, 0, 0;
-  --ion-color-artifact-shade: #dda928;
-  --ion-color-artifact-tint: #fbc642;
+  --ion-color-artifact-shade: #e0c572;
+  --ion-color-artifact-tint: #ffe38f;
 }
 
 .ion-color-artifact {
