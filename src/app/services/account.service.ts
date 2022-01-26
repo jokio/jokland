@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core'
 import detectEthereumProvider from '@metamask/detect-provider'
 import { ethers } from 'ethers'
+import { Subject } from 'rxjs'
 
 @Injectable()
 export class AccountService {
@@ -13,6 +14,8 @@ export class AccountService {
   chainName = ''
 
   isConnectEnabled = false
+
+  activeAccountUpdate$ = new Subject<string>()
 
   get isWalletConnected() {
     return !!localStorage.getItem('jok.address')
@@ -74,15 +77,7 @@ export class AccountService {
 
     this.userBalance = formattedBalance.slice(0, decimalsIndex + 5)
 
-    // const provider = new ethers.providers.Web3Provider(
-    //   (window as any).ethereum,
-    // )
-
-    // // The MetaMask plugin also allows signing transactions to
-    // // send ether and pay to change state within the blockchain.
-    // // For this, you need the account signer...
-    // const signer = provider.getSigner()
-    // const address = await signer.getAddress()
+    this.activeAccountUpdate$.next(this.userAddress)
   }
 
   async initializeWallet() {

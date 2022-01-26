@@ -21,6 +21,18 @@
   }
 }
 
+.leftActions {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.rightActions {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+
 ion-segment {
   ion-segment-button {
     min-width: 95px;

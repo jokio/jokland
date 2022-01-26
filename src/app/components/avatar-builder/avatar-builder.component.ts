@@ -6,7 +6,6 @@ import {
   OnInit,
   Output,
 } from '@angular/core'
-import { commonAvatarLayers } from '../../data/commonAvatarLayers.data'
 import {
   AvatarBuilderTabs,
   AvatarCollectionGroup,
@@ -28,14 +27,23 @@ export class AvatarBuilderComponent implements OnInit {
   @Input()
   selectedTab = AvatarBuilderTabs.SKIN
 
+  @Input()
+  data: Map<AvatarItemType, AvatarCollectionGroup> = new Map()
+
+  @Input()
+  allItems: AvatarItem[] = []
+
   @Output()
   selectedTabChange = new EventEmitter<AvatarBuilderTabs>()
 
   @Output()
   avatarChange = new EventEmitter<AvatarItem[]>()
 
-  data: Map<AvatarItemType, AvatarCollectionGroup> = new Map()
-  allItems: AvatarItem[] = []
+  @Output()
+  closeClick = new EventEmitter<void>()
+
+  @Output()
+  saveClick = new EventEmitter()
 
   menuItems: MenuItem[] = []
 
@@ -58,8 +66,6 @@ export class AvatarBuilderComponent implements OnInit {
 
     return items.map(x => x.url)
   }
-
-  constructor() {}
 
   ngOnInit() {
     this.menuItems = [
@@ -101,12 +107,6 @@ export class AvatarBuilderComponent implements OnInit {
       },
     ]
 
-    this.loadData()
-
-    this.allItems = [...this.data.values()].flatMap(x =>
-      x.collections.flatMap(y => y.items),
-    )
-
     this.selectedItems = this.allItems.filter(x =>
       this.selectedItemKeys.includes(x.key),
     )
@@ -129,135 +129,15 @@ export class AvatarBuilderComponent implements OnInit {
     this.avatarChange.emit(items)
   }
 
+  save() {
+    this.saveClick.emit()
+  }
+
+  close() {
+    this.closeClick.emit()
+  }
+
   // helper methods
-  loadData() {
-    this.data.clear()
-
-    this.loadCommonItems()
-  }
-
-  loadCommonItems() {
-    this.data.set(AvatarItemType.SKIN, {
-      name: 'Skin',
-      collections: [
-        {
-          name: '',
-          items: commonAvatarLayers.skin.map(x => ({
-            type: AvatarItemType.SKIN,
-            level: 'COMMON',
-            key: `common/skin_${x[0]}`,
-            url: x[1],
-          })),
-        },
-      ],
-    })
-
-    this.data.set(AvatarItemType.HAIR, {
-      name: 'Hair',
-      collections: [
-        {
-          name: '',
-          items: commonAvatarLayers.hair.map(x => ({
-            type: AvatarItemType.HAIR,
-            level: 'COMMON',
-            key: `common/hair_${x[0]}`,
-            url: x[1],
-          })),
-        },
-      ],
-    })
-
-    this.data.set(AvatarItemType.FACIAL_HAIR, {
-      name: 'Facial Hair',
-      collections: [
-        {
-          name: '',
-          items: commonAvatarLayers.facialHair.map(x => ({
-            type: AvatarItemType.FACIAL_HAIR,
-            level: 'COMMON',
-            key: `common/facialHair_${x[0]}`,
-            url: x[1],
-          })),
-        },
-      ],
-    })
-
-    this.data.set(AvatarItemType.EYES, {
-      name: 'Eyes',
-      collections: [
-        {
-          name: '',
-          items: commonAvatarLayers.eyes.map(x => ({
-            type: AvatarItemType.EYES,
-            level: 'COMMON',
-            key: `common/eyes_${x[0]}`,
-            url: x[1],
-          })),
-        },
-      ],
-    })
-
-    this.data.set(AvatarItemType.EYEBROWS, {
-      name: 'Eyebrows',
-      collections: [
-        {
-          name: '',
-          items: commonAvatarLayers.eyebrows.map(x => ({
-            type: AvatarItemType.EYEBROWS,
-            level: 'COMMON',
-            key: `common/eyebrows_${x[0]}`,
-            url: x[1],
-          })),
-        },
-      ],
-    })
-
-    this.data.set(AvatarItemType.MOUTH, {
-      name: 'Mouth',
-      collections: [
-        {
-          name: '',
-          items: commonAvatarLayers.mouth.map(x => ({
-            type: AvatarItemType.MOUTH,
-            level: 'COMMON',
-            key: `common/mouth_${x[0]}`,
-            url: x[1],
-          })),
-        },
-      ],
-    })
-
-    this.data.set(AvatarItemType.CLOTHES, {
-      name: 'Clothes',
-      collections: [
-        {
-          name: '',
-          items: commonAvatarLayers.clothes.map(x => ({
-            type: AvatarItemType.CLOTHES,
-            level: 'COMMON',
-            key: `common/clothes_${x[0]}`,
-            url: x[1],
-          })),
-        },
-      ],
-    })
-
-    this.data.set(AvatarItemType.ACCESSORIES, {
-      name: 'Accessories',
-      collections: [
-        {
-          name: '',
-          items: commonAvatarLayers.accessories.map(x => ({
-            type: AvatarItemType.ACCESSORIES,
-            level: 'COMMON',
-            key: `common/accessories_${x[0]}`,
-            url: x[1],
-          })),
-        },
-      ],
-    })
-  }
-
   isSelected(item: AvatarItem) {
     return !!this.selectedItems.find(x => x.key === item.key)
   }

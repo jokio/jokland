@@ -1,11 +1,21 @@
 import { EventEmitter, Injectable } from '@angular/core'
 import { ModalController } from '@ionic/angular'
+import { ethers } from 'ethers'
 import mergeImages from 'merge-images'
 import { AvatarBuilderComponent } from '../components/avatar-builder/avatar-builder.component'
-import { AvatarBuilderTabs, AvatarItem } from '../domain/avatar.types'
+import { commonAvatarLayers } from '../data/commonAvatarLayers.data'
+import {
+  AvatarBuilderTabs,
+  AvatarCollectionGroup,
+  AvatarItem,
+  AvatarItemType,
+} from '../domain/avatar.types'
 
 @Injectable()
 export class AvatarService {
+  data: Map<AvatarItemType, AvatarCollectionGroup> = new Map()
+  allItems: AvatarItem[] = []
+
   private defaultKeys = [
     'common/skin_1b',
     'common/hair_2',
@@ -15,20 +25,24 @@ export class AvatarService {
   ]
   private avatarCache: Map<string, string> = new Map()
 
-  constructor(private modal: ModalController) {}
+  constructor(private modal: ModalController) {
+    this.loadData()
+  }
 
   getItemKeys(address: string) {
     let selectedItemKeysString = localStorage.getItem(
-      'avatarConfig.' + address,
+      'config.' + address,
     )
 
     if (!selectedItemKeysString) {
       // fallback to "no account configuration", if such exists
-      selectedItemKeysString = localStorage.getItem('avatarConfig.')
+      selectedItemKeysString = localStorage.getItem('config.')
     }
 
     const selectedItemKeys = selectedItemKeysString
       ? selectedItemKeysString.split(',')
+      : address
+      ? getDefaultAvatarKeysByAddress(address)
       : this.defaultKeys
 
     return selectedItemKeys
@@ -40,21 +54,32 @@ export class AvatarService {
       return image
     }
 
-    image = localStorage.getItem('avatarImage.' + address)
+    image = localStorage.getItem('image.' + address)
     this.avatarCache.set(address, image!)
 
     return image
   }
 
+  async ensureAvatarImageExists(address: string) {
+    if (!!localStorage.getItem('config.' + address)) {
+      return
+    }
+
+    const keys = this.getItemKeys(address)
+    const items = this.allItems.filter(x => keys.includes(x.key))
+
+    await this.setItems(address, items)
+  }
+
   async setItems(address: string, items: AvatarItem[]) {
     localStorage.setItem(
-      'avatarConfig.' + address,
+      'config.' + address,
       items.map(x => x.key).join(','),
     )
 
     const avatarImage = await mergeImages(items.map(x => x.url))
 
-    localStorage.setItem('avatarImage.' + address, avatarImage)
+    localStorage.setItem('image.' + address, avatarImage)
     this.avatarCache.set(address, avatarImage)
   }
 
@@ -67,6 +92,14 @@ export class AvatarService {
     const onAvatarChange = new EventEmitter<AvatarItem[]>()
     onAvatarChange.subscribe(items => this.setItems(address, items))
 
+    const onClose = new EventEmitter<AvatarItem[]>()
+    onClose.subscribe(() => modalView.dismiss())
+
+    const onSave = new EventEmitter<AvatarItem[]>()
+    onSave.subscribe(() =>
+      this.signAndSave(address, this.getItemKeys(address)),
+    )
+
     const selectedTab =
       localStorage.getItem('jok.builderTab') ?? AvatarBuilderTabs.SKIN
 
@@ -78,11 +111,210 @@ export class AvatarService {
       componentProps: {
         selectedItemKeys,
         selectedTab,
+        data: this.data,
+        allItems: this.allItems,
         selectedTabChange: onTabChange,
         avatarChange: onAvatarChange,
+        closeClick: onClose,
+        saveClick: onSave,
       },
     })
 
     modalView.present()
   }
+
+  private async signAndSave(address: string, keys: string[]) {
+    const provider = new ethers.providers.Web3Provider(
+      (window as any).ethereum,
+    )
+
+    const signer = provider.getSigner()
+
+    const signature = await signer.signMessage(
+      [address, ...keys].join('\n'),
+    )
+
+    console.log('signAndSave', address, keys, signature)
+  }
+
+  private loadData() {
+    this.data.clear()
+
+    this.loadCommonItems()
+
+    this.allItems = [...this.data.values()].flatMap(x =>
+      x.collections.flatMap(y => y.items),
+    )
+  }
+
+  private loadCommonItems() {
+    this.data.set(AvatarItemType.SKIN, {
+      name: 'Skin',
+      collections: [
+        {
+          name: '',
+          items: commonAvatarLayers.skin.map(x => ({
+            type: AvatarItemType.SKIN,
+            level: 'COMMON',
+            key: `common/skin_${x[0]}`,
+            url: x[1],
+          })),
+        },
+      ],
+    })
+
+    this.data.set(AvatarItemType.HAIR, {
+      name: 'Hair',
+      collections: [
+        {
+          name: '',
+          items: commonAvatarLayers.hair.map(x => ({
+            type: AvatarItemType.HAIR,
+            level: 'COMMON',
+            key: `common/hair_${x[0]}`,
+            url: x[1],
+          })),
+        },
+      ],
+    })
+
+    this.data.set(AvatarItemType.FACIAL_HAIR, {
+      name: 'Facial Hair',
+      collections: [
+        {
+          name: '',
+          items: commonAvatarLayers.facialHair.map(x => ({
+            type: AvatarItemType.FACIAL_HAIR,
+            level: 'COMMON',
+            key: `common/facialHair_${x[0]}`,
+            url: x[1],
+          })),
+        },
+      ],
+    })
+
+    this.data.set(AvatarItemType.EYES, {
+      name: 'Eyes',
+      collections: [
+        {
+          name: '',
+          items: commonAvatarLayers.eyes.map(x => ({
+            type: AvatarItemType.EYES,
+            level: 'COMMON',
+            key: `common/eyes_${x[0]}`,
+            url: x[1],
+          })),
+        },
+      ],
+    })
+
+    this.data.set(AvatarItemType.EYEBROWS, {
+      name: 'Eyebrows',
+      collections: [
+        {
+          name: '',
+          items: commonAvatarLayers.eyebrows.map(x => ({
+            type: AvatarItemType.EYEBROWS,
+            level: 'COMMON',
+            key: `common/eyebrows_${x[0]}`,
+            url: x[1],
+          })),
+        },
+      ],
+    })
+
+    this.data.set(AvatarItemType.MOUTH, {
+      name: 'Mouth',
+      collections: [
+        {
+          name: '',
+          items: commonAvatarLayers.mouth.map(x => ({
+            type: AvatarItemType.MOUTH,
+            level: 'COMMON',
+            key: `common/mouth_${x[0]}`,
+            url: x[1],
+          })),
+        },
+      ],
+    })
+
+    this.data.set(AvatarItemType.CLOTHES, {
+      name: 'Clothes',
+      collections: [
+        {
+          name: '',
+          items: commonAvatarLayers.clothes.map(x => ({
+            type: AvatarItemType.CLOTHES,
+            level: 'COMMON',
+            key: `common/clothes_${x[0]}`,
+            url: x[1],
+          })),
+        },
+      ],
+    })
+
+    this.data.set(AvatarItemType.ACCESSORIES, {
+      name: 'Accessories',
+      collections: [
+        {
+          name: '',
+          items: commonAvatarLayers.accessories.map(x => ({
+            type: AvatarItemType.ACCESSORIES,
+            level: 'COMMON',
+            key: `common/accessories_${x[0]}`,
+            url: x[1],
+          })),
+        },
+      ],
+    })
+  }
+}
+
+function getDefaultAvatarKeysByAddress(address: string): string[] {
+  let addressNumber = parseInt(address.slice(2), 16)
+
+  const eyesOptions = [
+    'common/eyes_1',
+    'common/eyes_2',
+    'common/eyes_3',
+    'common/eyes_4',
+    'common/eyes_5',
+    'common/eyes_6',
+    'common/eyes_7',
+    'common/eyes_8',
+  ]
+
+  const hairOptions = [
+    'common/hair_2',
+    'common/hair_4',
+    'common/hair_7',
+  ]
+
+  const mouthOptions = [
+    'common/mouth_2',
+    'common/mouth_5',
+    'common/mouth_6',
+    'common/mouth_9',
+    'common/mouth_12',
+    'common/mouth_13',
+    'common/mouth_15',
+  ]
+
+  console.log('addressNumber', addressNumber)
+
+  const eyesKey = eyesOptions[addressNumber % eyesOptions.length]
+
+  addressNumber = Math.round(addressNumber / 10000)
+  const hairKey = hairOptions[addressNumber % hairOptions.length]
+
+  addressNumber = Math.round(addressNumber / 10000)
+  const mouthKey = mouthOptions[addressNumber % mouthOptions.length]
+
+  return [
+    'common/skin_1b',
+    hairKey,
+    eyesKey,
+    mouthKey,
+    'common/clothes_22',
+  ]
 }

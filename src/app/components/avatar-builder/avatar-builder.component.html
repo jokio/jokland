@@ -5,6 +5,19 @@
         <img [src]="imageUrl" [alt]="'layer ' + i" />
       </ng-container>
     </div>
+    <div class="leftActions">
+      <ion-button fill="clear" color="dark" (click)="close()">
+        <ion-icon
+          slot="icon-only"
+          name="close-circle-outline"
+        ></ion-icon>
+      </ion-button>
+    </div>
+    <div class="rightActions">
+      <ion-button fill="outline" size="small" (click)="save()">
+        Sign & Save
+      </ion-button>
+    </div>
   </div>
   <ion-segment
     [scrollable]="true"

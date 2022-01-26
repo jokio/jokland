@@ -39,6 +39,10 @@ export class AppComponent implements OnInit {
         break
     }
 
+    this.account.activeAccountUpdate$.subscribe(address => {
+      this.avatar.ensureAvatarImageExists(address)
+    })
+
     this.account.initializeWallet()
   }
 
