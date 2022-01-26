@@ -45,9 +45,27 @@
       </ion-segment>
 
       <div slot="end" class="ion-text-center actions">
-        <ion-button color="secondary" size="small" disabled>
-          Connect Wallet
-        </ion-button>
+        <ng-container *ngIf="userAddress; else ConnectView">
+          <ion-button
+            color="secondary"
+            size="small"
+            class="userProfileButton"
+            (click)="selectAddress()"
+          >
+            <span class="balance"> {{ userBalance }}Ξ </span>
+            {{ userENS || userDisplayAddress }}
+            <span class="chain"> [{{ chainName }}] </span>
+          </ion-button>
+        </ng-container>
+        <ng-template #ConnectView>
+          <ion-button
+            color="secondary"
+            size="small"
+            (click)="connect()"
+          >
+            Connect Wallet
+          </ion-button>
+        </ng-template>
         <ion-button id="menuButton" color="secondary" size="small">
           ...
         </ion-button>
