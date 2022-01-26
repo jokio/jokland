@@ -10,6 +10,8 @@ import { environment } from '../environments/environment'
 import { AppRoutingModule } from './app-routing.module'
 import { AvatarBuilderComponent } from './components/avatar-builder/avatar-builder.component'
 import { AppComponent } from './layouts/app/app.component'
+import { AccountService } from './services/account.service'
+import { AvatarService } from './services/avatar.service'
 
 @NgModule({
   declarations: [AppComponent, AvatarBuilderComponent],
@@ -27,6 +29,8 @@ import { AppComponent } from './layouts/app/app.component'
   providers: [
     [
       Location,
+      AccountService,
+      AvatarService,
       { provide: LocationStrategy, useClass: HashLocationStrategy },
     ],
   ],

@@ -31,6 +31,9 @@ export class AvatarBuilderComponent implements OnInit {
   @Output()
   selectedTabChange = new EventEmitter<AvatarBuilderTabs>()
 
+  @Output()
+  avatarChange = new EventEmitter<AvatarItem[]>()
+
   data: Map<AvatarItemType, AvatarCollectionGroup> = new Map()
   allItems: AvatarItem[] = []
 
@@ -120,6 +123,10 @@ export class AvatarBuilderComponent implements OnInit {
       x => x.type !== item.type,
     )
     this.selectedItems.push(item)
+
+    const items = getOrderedAvatarLayers(this.selectedItems)
+
+    this.avatarChange.emit(items)
   }
 
   // helper methods

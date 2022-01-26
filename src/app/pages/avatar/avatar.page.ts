@@ -1,14 +1,8 @@
-import {
-  Component,
-  EventEmitter,
-  OnDestroy,
-  OnInit,
-} from '@angular/core'
+import { Component, OnDestroy, OnInit } from '@angular/core'
 import { Router } from '@angular/router'
-import { ModalController } from '@ionic/angular'
 import { Subject } from 'rxjs'
-import { AvatarBuilderComponent } from '../../components/avatar-builder/avatar-builder.component'
-import { AvatarBuilderTabs } from '../../domain/avatar.types'
+import { AccountService } from '../../services/account.service'
+import { AvatarService } from '../../services/avatar.service'
 
 @Component({
   selector: 'app-avatar',
@@ -20,12 +14,11 @@ export class AvatarPage implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
-    private modal: ModalController,
+    private account: AccountService,
+    private avatar: AvatarService,
   ) {}
 
-  ngOnInit() {
-    // this.openBuilder()
-  }
+  ngOnInit() {}
 
   ngOnDestroy() {
     this.unsubscribe$.next()
@@ -37,30 +30,6 @@ export class AvatarPage implements OnInit, OnDestroy {
   }
 
   async openBuilder() {
-    const onTabChange = new EventEmitter()
-    onTabChange.subscribe(x => {
-      localStorage.setItem('jok.builderTab', x)
-    })
-
-    const selectedTab =
-      localStorage.getItem('jok.builderTab') ?? AvatarBuilderTabs.SKIN
-
-    const modalView = await this.modal.create({
-      component: AvatarBuilderComponent,
-      swipeToClose: true,
-      componentProps: {
-        selectedItemKeys: [
-          'common/skin_1b',
-          'common/hair_2',
-          'common/eyes_1',
-          'common/mouth_2',
-          'common/clothes_22',
-        ],
-        selectedTab,
-        selectedTabChange: onTabChange,
-      },
-    })
-
-    modalView.present()
+    this.avatar.openAvatarBuilder(this.account.userAddress)
   }
 }

@@ -45,22 +45,23 @@
       </ion-segment>
 
       <div slot="end" class="ion-text-center actions">
-        <ng-container *ngIf="userAddress; else ConnectView">
+        <ng-container *ngIf="account.userAddress; else ConnectView">
           <ion-button
             color="secondary"
             size="small"
             class="userProfileButton"
-            (click)="selectAddress()"
+            (click)="account.selectAddress()"
           >
-            <span class="balance"> {{ userBalance }}Ξ </span>
-            {{ userENS || userDisplayAddress }}
-            <span class="chain"> [{{ chainName }}] </span>
+            <span class="balance"> {{ account.userBalance }}Ξ </span>
+            {{ account.userENS || account.userDisplayAddress }}
+            <span class="chain"> [{{ account.chainName }}] </span>
           </ion-button>
 
-          <div class="avatar">
-            <img
-              src="https://server.jok.io/avatar/5d7d29b6c8178f001c1b3d8f?ignore=1643140800258"
-            />
+          <div
+            class="avatar"
+            (click)="avatar.openAvatarBuilder(account.userAddress)"
+          >
+            <img [src]="avatar.getAvatarImage(account.userAddress)" />
           </div>
         </ng-container>
 
@@ -72,27 +73,19 @@
           >
             Connect Wallet
           </ion-button>
-          <ion-button id="menuButton" color="secondary" size="small">
+          <ion-button
+            id="popoverButton"
+            color="secondary"
+            size="small"
+          >
             ...
           </ion-button>
         </ng-template>
 
-        <ion-popover trigger="menuButton">
+        <ion-popover trigger="popoverButton">
           <ng-template>
             <ion-content color="light">
               <ion-list>
-                <!-- <ion-item
-                  color="light"
-                  [button]="true"
-                  [detailIcon]="false"
-                  (click)="openAbout()"
-                >
-                  <ion-icon
-                    name="information-circle-outline"
-                    slot="start"
-                  ></ion-icon>
-                  <ion-label>About</ion-label>
-                </ion-item> -->
                 <ion-item
                   color="light"
                   href="https://github.com/jokio"
