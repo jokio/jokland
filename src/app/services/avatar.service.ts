@@ -187,7 +187,6 @@ export class AvatarService {
       `${environment.avatarServiceUrl}/config`,
       {
         method: 'POST',
-        mode: 'no-cors',
         headers: {
           'content-type': 'application/json',
         },
