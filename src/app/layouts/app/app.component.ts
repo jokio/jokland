@@ -41,8 +41,6 @@ export class AppComponent implements OnInit {
     }
 
     this.account.activeAccountUpdate$.subscribe(async address => {
-      this.avatar.ensureAvatarImageExists(address)
-
       try {
         const data = await fetch(
           `${environment.avatarServiceUrl}/config/${address}`,
@@ -63,6 +61,8 @@ export class AppComponent implements OnInit {
               'savedConfig.' + address,
               data.keys.slice().sort().join(','),
             )
+
+            this.avatar.ensureAvatarImageExists(address)
 
             this.avatar.updateDraftState(address)
           }
