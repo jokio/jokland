@@ -10,6 +10,16 @@ section:not(.preview) {
   }
 }
 
+section.privacy {
+  p {
+    margin-top: 0;
+  }
+
+  a {
+    text-decoration: none;
+  }
+}
+
 .preview {
   height: 400px;
   background: url('/assets/avatar_users.png') center center repeat-x;
