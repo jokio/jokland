@@ -203,7 +203,6 @@ export class AvatarService {
     const onDownload = new EventEmitter()
     onDownload.subscribe(() => {
       const data = localStorage.getItem('image.' + address)
-      console.log(data)
 
       var a = document.createElement('a')
       a.href = data!
@@ -236,6 +235,11 @@ export class AvatarService {
         downloadClick: onDownload,
       },
     })
+
+    // modalView.addEventListener('didPresent', () => {
+    //   console.log(modalView.delegate)
+    //   ;(modalView.childNodes[0] as any).scrollMenu()
+    // })
 
     modalView.addEventListener('willDismiss', () => {
       this.updateDraftState(address)

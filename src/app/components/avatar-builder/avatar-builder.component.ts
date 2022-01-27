@@ -1,11 +1,17 @@
 import {
+  AfterViewInit,
+  ApplicationRef,
   ChangeDetectionStrategy,
   Component,
+  ElementRef,
   EventEmitter,
   Input,
+  NgZone,
   OnInit,
   Output,
+  ViewChild,
 } from '@angular/core'
+import { IonSegment } from '@ionic/angular'
 import {
   AvatarBuilderTabs,
   AvatarCollectionGroup,
@@ -20,7 +26,7 @@ import { getOrderedAvatarLayers } from '../../domain/getOrderedAvatarLayers'
   styleUrls: ['./avatar-builder.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AvatarBuilderComponent implements OnInit {
+export class AvatarBuilderComponent implements OnInit, AfterViewInit {
   @Input()
   selectedItemKeys: string[] = []
 
@@ -60,9 +66,14 @@ export class AvatarBuilderComponent implements OnInit {
   @Output()
   downloadClick = new EventEmitter()
 
+  @ViewChild(IonSegment, { read: ElementRef })
+  ionSegment!: ElementRef
+
   menuItems: MenuItem[] = []
 
   selectedItems: AvatarItem[] = []
+
+  isMenuLoaded = false
 
   get selectedCollectionGroups() {
     const menuItem = this.menuItems.find(
@@ -81,6 +92,12 @@ export class AvatarBuilderComponent implements OnInit {
 
     return items.map(x => x.url)
   }
+
+  constructor(
+    private hostElement: ElementRef,
+    private zone: NgZone,
+    private appRef: ApplicationRef,
+  ) {}
 
   ngOnInit() {
     this.menuItems = [
@@ -127,10 +144,44 @@ export class AvatarBuilderComponent implements OnInit {
     )
   }
 
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.scrollMenu()
+      this.isMenuLoaded = true
+    }, 100)
+
+    setTimeout(() => {
+      this.scrollMenu()
+    }, 300)
+  }
+
   onTabChange(e: any) {
     this.selectedTab = e.detail.value
 
     this.selectedTabChange.emit(this.selectedTab)
+
+    this.scrollMenu()
+  }
+
+  scrollMenu() {
+    if (!this.hostElement.nativeElement || !this.ionSegment) {
+      return
+    }
+
+    const leftOffset =
+      385 - this.hostElement.nativeElement.clientWidth / 2 + 95 / 2
+
+    const itemOffset =
+      leftOffset +
+      this.menuItems.findIndex(x => x.tab === this.selectedTab) * 95
+
+    ;(window as any).t = this.ionSegment.nativeElement
+    console.log(
+      this.hostElement.nativeElement.clientWidth,
+      leftOffset,
+      itemOffset,
+    )
+    this.ionSegment.nativeElement.scroll(itemOffset, 0)
   }
 
   selectItem(item: AvatarItem) {

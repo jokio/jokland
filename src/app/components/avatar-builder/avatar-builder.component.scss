@@ -37,9 +37,27 @@
 
 ion-segment {
   height: 35px;
+  overflow: hidden;
 
   ion-segment-button {
     min-width: 95px;
+    // visibility: hidden;
+
+    &:first-of-type {
+      margin-left: 385px;
+    }
+
+    &:last-of-type {
+      margin-right: 385px;
+    }
+  }
+
+  &.loaded {
+    scroll-behavior: smooth;
+
+    ion-segment-button {
+      visibility: visible;
+    }
   }
 }
 

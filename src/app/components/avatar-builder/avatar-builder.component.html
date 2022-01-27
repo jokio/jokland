@@ -15,7 +15,7 @@
     </div>
     <div class="rightActions">
       <ng-container *ngIf="isSaved(); else SaveTemplate">
-        <ion-button size="small" color="secondary" disabled>
+        <ion-button size="small" color="primary" disabled>
           Saved
           <ion-icon
             slot="start"
@@ -77,6 +77,8 @@
   <ion-segment
     [scrollable]="true"
     [value]="selectedTab"
+    class="itemTypes"
+    [class.loaded]="isMenuLoaded"
     (ionChange)="onTabChange($event)"
   >
     <ion-segment-button
