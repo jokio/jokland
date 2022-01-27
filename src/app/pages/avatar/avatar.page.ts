@@ -18,9 +18,7 @@ export class AvatarPage implements OnInit, OnDestroy {
     private avatar: AvatarService,
   ) {}
 
-  ngOnInit() {
-    this.openBuilder()
-  }
+  ngOnInit() {}
 
   ngOnDestroy() {
     this.unsubscribe$.next()
