@@ -19,7 +19,13 @@ const routes: Routes = [
 ]
 
 @NgModule({
-  imports: [CommonModule, RouterModule.forRoot(routes), IonicModule],
+  imports: [
+    CommonModule,
+    RouterModule.forRoot(routes, {
+      initialNavigation: 'enabledBlocking',
+    }),
+    IonicModule,
+  ],
   declarations: [
     AvatarPage,
     PacksPage,

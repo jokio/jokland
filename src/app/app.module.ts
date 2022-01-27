@@ -16,7 +16,7 @@ import { AvatarService } from './services/avatar.service'
 @NgModule({
   declarations: [AppComponent, AvatarBuilderComponent],
   imports: [
-    BrowserModule,
+    BrowserModule.withServerTransition({ appId: 'serverApp' }),
     AppRoutingModule,
     IonicModule.forRoot({ mode: 'ios' }),
     ServiceWorkerModule.register('ngsw-worker.js', {
@@ -27,12 +27,17 @@ import { AvatarService } from './services/avatar.service'
     }),
   ],
   providers: [
-    [
-      Location,
-      AccountService,
-      AvatarService,
-      { provide: LocationStrategy, useClass: HashLocationStrategy },
-    ],
+    Location,
+    AccountService,
+    AvatarService,
+    ...(environment.enableHashBasedNavigation
+      ? [
+          {
+            provide: LocationStrategy,
+            useClass: HashLocationStrategy,
+          },
+        ]
+      : []),
   ],
   bootstrap: [AppComponent],
 })
