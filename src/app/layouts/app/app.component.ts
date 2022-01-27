@@ -48,8 +48,19 @@ export class AppComponent implements OnInit {
           `${environment.avatarServiceUrl}/config/${address}`,
         ).then(x => x.json())
 
-        if (data?.length) {
-          await this.avatar.setItemsByKeys(address, data)
+        if (data?.keys?.length) {
+          const lastSaveTimeString = localStorage.getItem(
+            'configTime.' + address,
+          )
+          const lastSaveTime = lastSaveTimeString
+            ? +lastSaveTimeString
+            : 0
+
+          if (lastSaveTime < data.updatedAt) {
+            await this.avatar.setItemsByKeys(address, data.keys)
+          } else {
+            this.avatar.updateDraftState(address)
+          }
         }
       } catch (err) {
         console.error(err)

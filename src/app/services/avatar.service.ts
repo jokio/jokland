@@ -103,6 +103,11 @@ export class AvatarService {
       items.map(x => x.key).join(','),
     )
 
+    localStorage.setItem(
+      'configTime.' + address,
+      Date.now().toString(),
+    )
+
     const avatarImage = await mergeImages(
       items
         .slice()
