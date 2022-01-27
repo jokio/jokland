@@ -201,7 +201,15 @@ export class AvatarService {
     })
 
     const onDownload = new EventEmitter()
-    onDownload.subscribe(async () => {})
+    onDownload.subscribe(() => {
+      const data = localStorage.getItem('image.' + address)
+      console.log(data)
+
+      var a = document.createElement('a')
+      a.href = data!
+      a.download = `${address}.png`
+      a.click()
+    })
 
     const selectedTab =
       localStorage.getItem('jok.builderTab') ?? AvatarBuilderTabs.SKIN
@@ -442,8 +450,6 @@ function getDefaultAvatarKeysByAddress(address: string): string[] {
     'common/mouth_15',
   ]
 
-  console.log('addressNumber', addressNumber)
-
   const eyesKey = eyesOptions[addressNumber % eyesOptions.length]
 
   addressNumber = Math.round(addressNumber / 10000)
@@ -481,8 +487,24 @@ export function shareLink(
   }
 }
 
-function copyLink(toast: ToastController, url: string) {
-  if ((document as any).execCommand) {
+async function copyLink(toast: ToastController, url: string) {
+  if (navigator.clipboard) {
+    await navigator.clipboard.writeText(url)
+    toast
+      .create({
+        header: 'Coppied!',
+        message:
+          'Link is coppied in the clipboard, just paste it anywhere & share with your friends!',
+        position: 'top',
+        color: 'light',
+        duration: 4000,
+      })
+      .then(x => {
+        x.onclick = () => x.dismiss()
+        x.ontouchstart = () => x.dismiss()
+        x.present()
+      })
+  } else if ((document as any).execCommand) {
     copyToClipboard(url)
     toast
       .create({
@@ -490,7 +512,7 @@ function copyLink(toast: ToastController, url: string) {
         message:
           'Link is coppied in the clipboard, just paste it anywhere & share with your friends!',
         position: 'top',
-        color: 'dark',
+        color: 'light',
         duration: 4000,
       })
       .then(x => {
@@ -507,7 +529,7 @@ function copyLink(toast: ToastController, url: string) {
         message:
           "Link is printed in the browser console (your browser doesn't support clipboard api), share it with your friends!",
         position: 'top',
-        color: 'dark',
+        color: 'light',
         duration: 4000,
       })
       .then(x => x.present())

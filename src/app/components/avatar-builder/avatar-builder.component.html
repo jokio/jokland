@@ -32,7 +32,9 @@
           <ion-icon slot="start" name="link-outline"></ion-icon>
           Share
         </ion-button>
+      </ng-container>
 
+      <ng-container *ngIf="isSaved() || !isWalletConnected">
         <ion-button
           fill="outline"
           size="small"
