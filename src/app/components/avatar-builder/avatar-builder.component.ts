@@ -54,6 +54,12 @@ export class AvatarBuilderComponent implements OnInit {
   @Output()
   undoClick = new EventEmitter()
 
+  @Output()
+  shareClick = new EventEmitter()
+
+  @Output()
+  downloadClick = new EventEmitter()
+
   menuItems: MenuItem[] = []
 
   selectedItems: AvatarItem[] = []
@@ -148,6 +154,14 @@ export class AvatarBuilderComponent implements OnInit {
 
   close() {
     this.closeClick.emit()
+  }
+
+  share() {
+    this.shareClick.emit()
+  }
+
+  download() {
+    this.downloadClick.emit()
   }
 
   // helper methods

@@ -1,4 +1,5 @@
 import { EventEmitter, Injectable } from '@angular/core'
+import { Share } from '@capacitor/share'
 import { ModalController, ToastController } from '@ionic/angular'
 import { ethers } from 'ethers'
 import mergeImages from 'merge-images'
@@ -190,6 +191,18 @@ export class AvatarService {
       modalView.dismiss()
     })
 
+    const onShare = new EventEmitter()
+    onShare.subscribe(async () => {
+      shareLink(
+        this.toast,
+        ' #web3 #avatar',
+        `https://avatar.jok.land/image/${address}`,
+      )
+    })
+
+    const onDownload = new EventEmitter()
+    onDownload.subscribe(async () => {})
+
     const selectedTab =
       localStorage.getItem('jok.builderTab') ?? AvatarBuilderTabs.SKIN
 
@@ -211,6 +224,8 @@ export class AvatarService {
         closeClick: onClose,
         saveClick: onSave,
         undoClick: onUndo,
+        shareClick: onShare,
+        downloadClick: onDownload,
       },
     })
 
@@ -444,4 +459,77 @@ function getDefaultAvatarKeysByAddress(address: string): string[] {
     mouthKey,
     'common/clothes_22',
   ]
+}
+
+export function shareLink(
+  toast: ToastController,
+  text: string,
+  url: string,
+  title = 'My Avatar',
+  dialogTitle = 'Web3 Avatar',
+  forceToCopyLink?: boolean,
+) {
+  if (navigator['share'] && !forceToCopyLink) {
+    Share.share({
+      title,
+      dialogTitle,
+      text,
+      url,
+    })
+  } else {
+    copyLink(toast, url)
+  }
+}
+
+function copyLink(toast: ToastController, url: string) {
+  if ((document as any).execCommand) {
+    copyToClipboard(url)
+    toast
+      .create({
+        header: 'Coppied!',
+        message:
+          'Link is coppied in the clipboard, just paste it anywhere & share with your friends!',
+        position: 'top',
+        color: 'dark',
+        duration: 4000,
+      })
+      .then(x => {
+        x.onclick = () => x.dismiss()
+        x.ontouchstart = () => x.dismiss()
+        x.present()
+      })
+  } else {
+    console.log('Share --> ', url)
+
+    toast
+      .create({
+        header: 'Console!',
+        message:
+          "Link is printed in the browser console (your browser doesn't support clipboard api), share it with your friends!",
+        position: 'top',
+        color: 'dark',
+        duration: 4000,
+      })
+      .then(x => x.present())
+  }
+}
+
+export function copyToClipboard(str: string) {
+  // Create new element
+  const el = document.createElement('textarea')
+  // Set value (string to be copied)
+  el.value = str
+  // Set non-editable to avoid focus and move outside of view
+  el.setAttribute('readonly', '')
+  el.style.position = 'absolute'
+  el.style.left = '-9999px'
+  el.style.top = '-9999px'
+
+  document.body.appendChild(el)
+  // Select text inside element
+  el.select()
+  // Copy text to clipboard
+  document.execCommand('copy')
+  // Remove temporary element
+  document.body.removeChild(el)
 }
