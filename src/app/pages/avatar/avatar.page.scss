@@ -8,15 +8,15 @@ section:not(.preview) {
   ion-button {
     min-width: 180px;
   }
+
+  a {
+    text-decoration: none;
+  }
 }
 
 section.privacy {
   p {
     margin-top: 0;
-  }
-
-  a {
-    text-decoration: none;
   }
 }
 
