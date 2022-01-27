@@ -14,9 +14,22 @@
       </ion-button>
     </div>
     <div class="rightActions">
-      <ion-button fill="outline" size="small" (click)="save()">
-        Sign & Save
+      <ion-button
+        *ngIf="isSaved; else SaveTemplate"
+        size="small"
+        disabled
+      >
+        Saved
+        <ion-icon
+          slot="end"
+          name="checkmark-circle-outline"
+        ></ion-icon>
       </ion-button>
+      <ng-template #SaveTemplate>
+        <ion-button fill="outline" size="small" (click)="save()">
+          Sign & Save
+        </ion-button>
+      </ng-template>
     </div>
   </div>
   <ion-segment

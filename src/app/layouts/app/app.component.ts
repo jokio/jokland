@@ -1,6 +1,7 @@
 import { Location } from '@angular/common'
 import { Component, OnInit } from '@angular/core'
 import MetamaskOnboarding from '@metamask/onboarding'
+import { environment } from '../../../environments/environment'
 import { AccountService } from '../../services/account.service'
 import { AvatarService } from '../../services/avatar.service'
 
@@ -39,8 +40,20 @@ export class AppComponent implements OnInit {
         break
     }
 
-    this.account.activeAccountUpdate$.subscribe(address => {
+    this.account.activeAccountUpdate$.subscribe(async address => {
       this.avatar.ensureAvatarImageExists(address)
+
+      try {
+        const data = await fetch(
+          `${environment.avatarServiceUrl}/config/${address}`,
+        ).then(x => x.json())
+
+        if (data?.length) {
+          await this.avatar.loadRemoteKeys(address, data.keys)
+        }
+      } catch (err) {
+        console.error(err)
+      }
     })
 
     this.account.initializeWallet()

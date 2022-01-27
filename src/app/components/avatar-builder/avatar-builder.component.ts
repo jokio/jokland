@@ -33,6 +33,9 @@ export class AvatarBuilderComponent implements OnInit {
   @Input()
   allItems: AvatarItem[] = []
 
+  @Input()
+  isSaved = false
+
   @Output()
   selectedTabChange = new EventEmitter<AvatarBuilderTabs>()
 

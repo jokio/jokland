@@ -1,7 +1,8 @@
 import { EventEmitter, Injectable } from '@angular/core'
-import { ModalController } from '@ionic/angular'
+import { ModalController, ToastController } from '@ionic/angular'
 import { ethers } from 'ethers'
 import mergeImages from 'merge-images'
+import { environment } from 'src/environments/environment'
 import { AvatarBuilderComponent } from '../components/avatar-builder/avatar-builder.component'
 import { commonAvatarLayers } from '../data/commonAvatarLayers.data'
 import {
@@ -25,7 +26,10 @@ export class AvatarService {
   ]
   private avatarCache: Map<string, string> = new Map()
 
-  constructor(private modal: ModalController) {
+  constructor(
+    private modal: ModalController,
+    private toast: ToastController,
+  ) {
     this.loadData()
   }
 
@@ -71,6 +75,12 @@ export class AvatarService {
     await this.setItems(address, items)
   }
 
+  async loadRemoteKeys(address: string, keys: string[]) {
+    const items = this.allItems.filter(x => keys.includes(x.key))
+
+    await this.setItems(address, items)
+  }
+
   async setItems(address: string, items: AvatarItem[]) {
     localStorage.setItem(
       'config.' + address,
@@ -84,26 +94,59 @@ export class AvatarService {
   }
 
   async openAvatarBuilder(address: string) {
+    const savedKeysString = localStorage.getItem(
+      'savedConfig.' + address,
+    )
+
+    const selectedItemKeys = this.getItemKeys(address)
+
     const onTabChange = new EventEmitter()
     onTabChange.subscribe(x => {
       localStorage.setItem('jok.builderTab', x)
     })
 
     const onAvatarChange = new EventEmitter<AvatarItem[]>()
-    onAvatarChange.subscribe(items => this.setItems(address, items))
+    onAvatarChange.subscribe(items => {
+      this.setItems(address, items)
+
+      isSaved = savedKeysString === items.slice().sort().join('')
+    })
 
     const onClose = new EventEmitter<AvatarItem[]>()
     onClose.subscribe(() => modalView.dismiss())
 
     const onSave = new EventEmitter<AvatarItem[]>()
-    onSave.subscribe(() =>
-      this.signAndSave(address, this.getItemKeys(address)),
-    )
+    onSave.subscribe(async () => {
+      try {
+        const isSuccess = await this.signAndSave(
+          address,
+          this.getItemKeys(address),
+        )
+
+        if (isSuccess) {
+          isSaved = true
+          const toastView = await this.toast.create({
+            message: 'Saved Successfully!',
+            position: 'top',
+            duration: 2000,
+            color: 'light',
+          })
+
+          toastView.onclick = () => toastView.dismiss()
+          toastView.present()
+
+          modalView.dismiss()
+        }
+      } catch (err) {
+        console.error(err)
+      }
+    })
 
     const selectedTab =
       localStorage.getItem('jok.builderTab') ?? AvatarBuilderTabs.SKIN
 
-    const selectedItemKeys = this.getItemKeys(address)
+    let isSaved =
+      savedKeysString === selectedItemKeys.slice().sort().join('')
 
     const modalView = await this.modal.create({
       component: AvatarBuilderComponent,
@@ -113,6 +156,7 @@ export class AvatarService {
         selectedTab,
         data: this.data,
         allItems: this.allItems,
+        isSaved,
         selectedTabChange: onTabChange,
         avatarChange: onAvatarChange,
         closeClick: onClose,
@@ -130,11 +174,41 @@ export class AvatarService {
 
     const signer = provider.getSigner()
 
-    const signature = await signer.signMessage(
-      [address, ...keys].join('\n'),
+    const message = [address, ...keys].join('\n')
+
+    const signature = await signer.signMessage(message)
+
+    // const signerAddr = await ethers.utils.verifyMessage(
+    //   message,
+    //   signature,
+    // )
+
+    const result = await fetch(
+      `${environment.avatarServiceUrl}/config`,
+      {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          address,
+          keys,
+          signature,
+        }),
+      },
     )
 
-    console.log('signAndSave', address, keys, signature)
+    if (result.status === 200) {
+      localStorage.setItem(
+        'savedConfig.' + address,
+        keys.slice().sort().join(','),
+      )
+
+      return true
+    }
+
+    return true
   }
 
   private loadData() {
