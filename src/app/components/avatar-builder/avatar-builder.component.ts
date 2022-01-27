@@ -175,12 +175,6 @@ export class AvatarBuilderComponent implements OnInit, AfterViewInit {
       leftOffset +
       this.menuItems.findIndex(x => x.tab === this.selectedTab) * 95
 
-    ;(window as any).t = this.ionSegment.nativeElement
-    console.log(
-      this.hostElement.nativeElement.clientWidth,
-      leftOffset,
-      itemOffset,
-    )
     this.ionSegment.nativeElement.scroll(itemOffset, 0)
   }
 

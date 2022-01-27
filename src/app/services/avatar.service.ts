@@ -236,11 +236,6 @@ export class AvatarService {
       },
     })
 
-    // modalView.addEventListener('didPresent', () => {
-    //   console.log(modalView.delegate)
-    //   ;(modalView.childNodes[0] as any).scrollMenu()
-    // })
-
     modalView.addEventListener('willDismiss', () => {
       this.updateDraftState(address)
     })

@@ -33,12 +33,10 @@ export class AccountService {
   ])
 
   async selectAddress() {
-    const permissions = await (window as any).ethereum.request({
+    await (window as any).ethereum.request({
       method: 'wallet_requestPermissions',
       params: [{ eth_accounts: {} }],
     })
-
-    console.log('permissions', permissions)
   }
 
   signOut() {
