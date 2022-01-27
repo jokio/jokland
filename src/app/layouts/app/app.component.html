@@ -64,6 +64,11 @@
             (click)="avatar.openAvatarBuilder(account.userAddress)"
           >
             <img [src]="avatar.getAvatarImage(account.userAddress)" />
+
+            <ion-icon
+              *ngIf="avatar.isDraft"
+              name="create-outline"
+            ></ion-icon>
           </div>
         </ng-container>
 

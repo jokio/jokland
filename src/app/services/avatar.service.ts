@@ -16,6 +16,7 @@ import {
 export class AvatarService {
   data: Map<AvatarItemType, AvatarCollectionGroup> = new Map()
   allItems: AvatarItem[] = []
+  isDraft = false
 
   private defaultKeys = [
     'common/skin_1b',
@@ -69,16 +70,31 @@ export class AvatarService {
       return
     }
 
-    const keys = this.getItemKeys(address)
-    const items = this.allItems.filter(x => keys.includes(x.key))
+    this.updateDraftState(address)
 
-    await this.setItems(address, items)
+    const keys = this.getItemKeys(address)
+
+    await this.setItemsByKeys(address, keys)
   }
 
-  async loadRemoteKeys(address: string, keys: string[]) {
+  async setItemsByKeys(address: string, keys: string[]) {
     const items = this.allItems.filter(x => keys.includes(x.key))
 
     await this.setItems(address, items)
+
+    return items
+  }
+
+  updateDraftState(address: string) {
+    const lastSavedKeys = localStorage.getItem(
+      'savedConfig.' + address,
+    )
+    let lastChangedKeys = localStorage.getItem('config.' + address)
+    if (lastChangedKeys) {
+      lastChangedKeys = lastChangedKeys.split(',').sort().join(',')
+    }
+
+    this.isDraft = !lastSavedKeys || lastSavedKeys !== lastChangedKeys
   }
 
   async setItems(address: string, items: AvatarItem[]) {
@@ -87,7 +103,12 @@ export class AvatarService {
       items.map(x => x.key).join(','),
     )
 
-    const avatarImage = await mergeImages(items.map(x => x.url))
+    const avatarImage = await mergeImages(
+      items
+        .slice()
+        .sort((a, b) => a.type - b.type)
+        .map(x => x.url),
+    )
 
     localStorage.setItem('image.' + address, avatarImage)
     this.avatarCache.set(address, avatarImage)
@@ -109,7 +130,13 @@ export class AvatarService {
     onAvatarChange.subscribe(items => {
       this.setItems(address, items)
 
-      isSaved = savedKeysString === items.slice().sort().join('')
+      isSaved =
+        savedKeysString ===
+        items
+          .map(x => x.key)
+          .slice()
+          .sort()
+          .join(',')
     })
 
     const onClose = new EventEmitter<AvatarItem[]>()
@@ -142,11 +169,27 @@ export class AvatarService {
       }
     })
 
+    const onUndo = new EventEmitter<AvatarItem[]>()
+    onUndo.subscribe(async () => {
+      const lastSavedKeys = localStorage.getItem(
+        'savedConfig.' + address,
+      )
+
+      if (!lastSavedKeys) {
+        return
+      }
+
+      localStorage.setItem('config.' + address, lastSavedKeys)
+      this.setItemsByKeys(address, lastSavedKeys.split(','))
+
+      modalView.dismiss()
+    })
+
     const selectedTab =
       localStorage.getItem('jok.builderTab') ?? AvatarBuilderTabs.SKIN
 
     let isSaved =
-      savedKeysString === selectedItemKeys.slice().sort().join('')
+      savedKeysString === selectedItemKeys.slice().sort().join(',')
 
     const modalView = await this.modal.create({
       component: AvatarBuilderComponent,
@@ -156,12 +199,17 @@ export class AvatarService {
         selectedTab,
         data: this.data,
         allItems: this.allItems,
-        isSaved,
+        isSaved: () => isSaved,
         selectedTabChange: onTabChange,
         avatarChange: onAvatarChange,
         closeClick: onClose,
         saveClick: onSave,
+        undoClick: onUndo,
       },
+    })
+
+    modalView.addEventListener('willDismiss', () => {
+      this.updateDraftState(address)
     })
 
     modalView.present()

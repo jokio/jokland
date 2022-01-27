@@ -34,7 +34,7 @@ export class AvatarBuilderComponent implements OnInit {
   allItems: AvatarItem[] = []
 
   @Input()
-  isSaved = false
+  isSaved = () => false
 
   @Output()
   selectedTabChange = new EventEmitter<AvatarBuilderTabs>()
@@ -47,6 +47,9 @@ export class AvatarBuilderComponent implements OnInit {
 
   @Output()
   saveClick = new EventEmitter()
+
+  @Output()
+  undoClick = new EventEmitter()
 
   menuItems: MenuItem[] = []
 
@@ -134,6 +137,10 @@ export class AvatarBuilderComponent implements OnInit {
 
   save() {
     this.saveClick.emit()
+  }
+
+  undo() {
+    this.undoClick.emit()
   }
 
   close() {

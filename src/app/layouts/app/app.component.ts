@@ -49,7 +49,7 @@ export class AppComponent implements OnInit {
         ).then(x => x.json())
 
         if (data?.length) {
-          await this.avatar.loadRemoteKeys(address, data.keys)
+          await this.avatar.setItemsByKeys(address, data)
         }
       } catch (err) {
         console.error(err)

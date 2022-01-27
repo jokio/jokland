@@ -15,8 +15,9 @@
     </div>
     <div class="rightActions">
       <ion-button
-        *ngIf="isSaved; else SaveTemplate"
+        *ngIf="isSaved(); else SaveTemplate"
         size="small"
+        color="secondary"
         disabled
       >
         Saved
@@ -26,8 +27,24 @@
         ></ion-icon>
       </ion-button>
       <ng-template #SaveTemplate>
-        <ion-button fill="outline" size="small" (click)="save()">
+        <ion-button
+          fill="outline"
+          size="small"
+          color="primary"
+          (click)="save()"
+        >
+          <ion-icon slot="start" name="create-outline"></ion-icon>
           Sign & Save
+        </ion-button>
+
+        <ion-button
+          fill="clear"
+          size="small"
+          color="secondary"
+          (click)="undo()"
+        >
+          <ion-icon slot="start" name="arrow-undo-outline"></ion-icon>
+          Undo
         </ion-button>
       </ng-template>
     </div>
