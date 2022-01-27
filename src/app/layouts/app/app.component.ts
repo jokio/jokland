@@ -59,6 +59,11 @@ export class AppComponent implements OnInit {
           if (lastSaveTime < data.updatedAt) {
             await this.avatar.setItemsByKeys(address, data.keys)
           } else {
+            localStorage.setItem(
+              'savedConfig.' + address,
+              data.keys.slice().sort().join(','),
+            )
+
             this.avatar.updateDraftState(address)
           }
         }

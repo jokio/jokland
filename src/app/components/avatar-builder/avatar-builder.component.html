@@ -27,25 +27,30 @@
         ></ion-icon>
       </ion-button>
       <ng-template #SaveTemplate>
-        <ion-button
-          fill="outline"
-          size="small"
-          color="primary"
-          (click)="save()"
-        >
-          <ion-icon slot="start" name="create-outline"></ion-icon>
-          Sign & Save
-        </ion-button>
+        <ng-container *ngIf="isWalletConnected">
+          <ion-button
+            fill="outline"
+            size="small"
+            color="primary"
+            (click)="save()"
+          >
+            <ion-icon slot="start" name="create-outline"></ion-icon>
+            Sign & Save
+          </ion-button>
 
-        <ion-button
-          fill="clear"
-          size="small"
-          color="secondary"
-          (click)="undo()"
-        >
-          <ion-icon slot="start" name="arrow-undo-outline"></ion-icon>
-          Undo
-        </ion-button>
+          <ion-button
+            fill="clear"
+            size="small"
+            color="secondary"
+            (click)="undo()"
+          >
+            <ion-icon
+              slot="start"
+              name="arrow-undo-outline"
+            ></ion-icon>
+            Undo
+          </ion-button>
+        </ng-container>
       </ng-template>
     </div>
   </div>

@@ -30,6 +30,9 @@ export class AvatarPage implements OnInit, OnDestroy {
   }
 
   async openBuilder() {
-    this.avatar.openAvatarBuilder(this.account.userAddress)
+    this.avatar.openAvatarBuilder(
+      this.account.userAddress,
+      this.account.isWalletConnected,
+    )
   }
 }

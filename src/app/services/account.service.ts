@@ -59,7 +59,7 @@ export class AccountService {
     localStorage.setItem('jok.address', account)
     this.userAddress = ethers.utils.getAddress(account)
     this.userDisplayAddress = this.minimizeAddress(account)
-    this.userBalance = '⏳'
+    this.userBalance = ''
     this.userENS = ''
 
     const provider = new ethers.providers.Web3Provider(
@@ -93,13 +93,6 @@ export class AccountService {
     })
 
     if (provider) {
-      console.log('Ethereum successfully detected!')
-
-      // From now on, this should always be true:
-      // provider === window.ethereum
-
-      // Access the decentralized web!
-
       // Legacy providers may only have ethereum.sendAsync
       this.chainId = await provider.request({
         method: 'eth_chainId',

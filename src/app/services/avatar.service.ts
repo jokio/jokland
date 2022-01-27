@@ -119,7 +119,7 @@ export class AvatarService {
     this.avatarCache.set(address, avatarImage)
   }
 
-  async openAvatarBuilder(address: string) {
+  async openAvatarBuilder(address: string, isWalletConnected = true) {
     const savedKeysString = localStorage.getItem(
       'savedConfig.' + address,
     )
@@ -204,6 +204,7 @@ export class AvatarService {
         selectedTab,
         data: this.data,
         allItems: this.allItems,
+        isWalletConnected,
         isSaved: () => isSaved,
         selectedTabChange: onTabChange,
         avatarChange: onAvatarChange,

@@ -34,6 +34,9 @@ export class AvatarBuilderComponent implements OnInit {
   allItems: AvatarItem[] = []
 
   @Input()
+  isWalletConnected = false
+
+  @Input()
   isSaved = () => false
 
   @Output()

@@ -52,7 +52,9 @@
             class="userProfileButton"
             (click)="account.selectAddress()"
           >
-            <span class="balance"> {{ account.userBalance }}Ξ </span>
+            <span *ngIf="account.userBalance" class="balance">
+              {{ account.userBalance }}Ξ
+            </span>
             {{ account.userENS || account.userDisplayAddress }}
             <span *ngIf="account.chainName" class="chain">
               [{{ account.chainName }}]
