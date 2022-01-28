@@ -196,7 +196,7 @@ export class AvatarService {
       shareLink(
         this.toast,
         ' #web3 #avatar',
-        `https://avatar.jok.land/image/${address}`,
+        `${environment.avatarServiceUrl}/image/${address}.png`,
       )
     })
 
