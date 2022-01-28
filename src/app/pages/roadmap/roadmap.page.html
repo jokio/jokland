@@ -21,7 +21,10 @@
       <div class="plan">
         <h4>Plan</h4>
         <ul>
-          <li *ngFor="let item of phase.planItems">
+          <li
+            *ngFor="let item of phase.planItems"
+            [class.completed]="item.completed"
+          >
             {{ item.name }}
           </li>
         </ul>

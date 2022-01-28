@@ -3,8 +3,8 @@ export const phases = [
     name: 'Launch 🚀',
     status: 'ACTIVE',
     planItems: [
-      { name: 'Avatar Builder UI' },
-      { name: 'Avatar Contract' },
+      { name: 'Avatar Builder UI', completed: true },
+      { name: 'Avatar Contract', completed: true },
       { name: 'Avatar Pack Contract' },
       { name: 'Cyberpunk Pack' },
       { name: 'Car Pack' },
@@ -22,7 +22,7 @@ export const phases = [
   {
     name: 'Grow 🧑‍🎨',
     planItems: [
-      { name: 'Build tooling for Avatar creators' },
+      { name: 'Build tooling for Avatar creators', completed: false },
       { name: 'Create design guidelines for creators' },
       { name: 'Publish 3 new Packs' },
       { name: 'Find partner website to integrate the avatar' },
@@ -40,7 +40,10 @@ export const phases = [
   {
     name: 'Skyrocket 🤯',
     planItems: [
-      { name: 'Create a marketplace for Avatar Layers' },
+      {
+        name: 'Create a marketplace for Avatar Layers',
+        completed: false,
+      },
       { name: 'Publish 3 new Packs' },
       { name: 'Find new partner websites to integrate the avatar' },
       {
