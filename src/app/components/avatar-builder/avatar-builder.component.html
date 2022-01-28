@@ -81,12 +81,16 @@
     [class.loaded]="isMenuLoaded"
     (ionChange)="onTabChange($event)"
   >
+    <div class="space"></div>
+
     <ion-segment-button
       *ngFor="let item of menuItems"
       [value]="item.tab"
     >
       <ion-label>{{ item.title }}</ion-label>
     </ion-segment-button>
+
+    <div class="space"></div>
   </ion-segment>
 </ion-header>
 <ion-content color="light">
